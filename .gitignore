@@ -1,0 +1,7 @@
+# Application
+node_modules
+.env
+dist
+
+# Editor
+.idea
