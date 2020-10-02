@@ -8,31 +8,42 @@ import { GraphQLServer } from 'graphql-yoga';
 // types definitions
 const typeDefs = `
   type Query {
-   title: String!
-   price: Float!
-   releaseYear: Int
-   rating: Float!
-   inStock: Boolean!
+    me: User!
+    post: Post!
+  }
+  
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    age: Int
+  }
+  
+  type Post {
+    id: ID!
+    title: String!
+    body: String!
+    published: Boolean!
   }
 `;
 
 // Resolvers
 const resolvers = {
   Query: {
-    title() {
-      return 'Surface Book 3';
+    me() {
+      return {
+        id: '123',
+        name: 'Antonio',
+        email: 'antonio@email.com',
+      };
     },
-    price() {
-      return 2500.15;
-    },
-    releaseYear() {
-      return 2019;
-    },
-    rating() {
-      return 4.8;
-    },
-    inStock() {
-      return true;
+    post() {
+      return {
+        id: '456',
+        title: 'Boundaries',
+        body: 'Body',
+        published: false,
+      };
     },
   },
 };
