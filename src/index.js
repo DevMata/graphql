@@ -105,7 +105,8 @@ const resolvers = {
     },
     posts(parent, args, ctx, info) {
       const { query } = args;
-      if (!args) {
+
+      if (!query) {
         return posts;
       }
       return posts.filter(
