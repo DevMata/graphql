@@ -70,6 +70,7 @@ const typeDefs = `
     name: String!
     email: String!
     age: Int
+    posts: [Post!]!
   }
   
   type Post {
@@ -125,6 +126,12 @@ const resolvers = {
     author(parent, args, ctx, info) {
       const { author } = parent;
       return users.find((user) => user.id === author);
+    },
+  },
+  User: {
+    posts(parent, args, ctx, info) {
+      const { id } = parent;
+      return posts.filter((post) => post.author === id);
     },
   },
 };
