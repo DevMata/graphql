@@ -2,19 +2,19 @@ import { GraphQLServer } from 'graphql-yoga';
 
 const users = [
   {
-    id: 1,
+    id: '1',
     name: 'Antonio Mata',
     email: 'antonio@email.com',
     age: 27,
   },
   {
-    id: 2,
+    id: '2',
     name: 'Arely Viana',
     email: 'arely@email.com',
     age: null,
   },
   {
-    id: 3,
+    id: '3',
     name: 'Adriana Rivas',
     email: 'adriana@email.com',
     age: null,
@@ -27,24 +27,28 @@ const posts = [
     title: 'Boundaries',
     body: 'A book about limits',
     published: true,
+    author: '1',
   },
   {
     id: '123',
     title: 'Wild at heart',
     body: 'A real man book',
     published: false,
+    author: '2',
   },
   {
     id: '789',
     title: 'Pragmatic programmer',
     body: 'Body',
     published: false,
+    author: '3',
   },
   {
     id: '147',
     title: 'Clean Code',
     body: 'Uncle Bob',
     published: true,
+    author: '1',
   },
 ];
 /*
@@ -73,6 +77,7 @@ const typeDefs = `
     title: String!
     body: String!
     published: Boolean!
+    author: User!
   }
 `;
 
@@ -114,6 +119,12 @@ const resolvers = {
           post.title.toLowerCase().includes(query.toLowerCase()) ||
           post.body.toLowerCase().includes(query.toLowerCase()),
       );
+    },
+  },
+  Post: {
+    author(parent, args, ctx, info) {
+      const { author } = parent;
+      return users.find((user) => user.id === author);
     },
   },
 };
