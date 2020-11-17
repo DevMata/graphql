@@ -108,6 +108,7 @@ const typeDefs = `
     body: String!
     published: Boolean!
     author: User!
+    comments: [Comment!]!
   }
   
   type Comment {
