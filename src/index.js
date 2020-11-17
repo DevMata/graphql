@@ -51,6 +51,25 @@ const posts = [
     author: '1',
   },
 ];
+
+const comments = [
+  {
+    id: 'a',
+    text: 'The A text',
+  },
+  {
+    id: 'b',
+    text: 'The B text',
+  },
+  {
+    id: 'c',
+    text: 'The C text',
+  },
+  {
+    id: 'd',
+    text: 'The D text',
+  },
+];
 /*
  * GraphQL Types
  * String, Boolean, Int, Float, ID
@@ -63,6 +82,7 @@ const typeDefs = `
     post: Post!
     users(query:String):[User!]!
     posts(query:String):[Post!]!
+    comments(query:String):[Comment!]!
   }
   
   type User {
@@ -79,6 +99,11 @@ const typeDefs = `
     body: String!
     published: Boolean!
     author: User!
+  }
+  
+  type Comment {
+    id: ID!,
+    text: String!
   }
 `;
 
@@ -120,6 +145,9 @@ const resolvers = {
           post.title.toLowerCase().includes(query.toLowerCase()) ||
           post.body.toLowerCase().includes(query.toLowerCase()),
       );
+    },
+    comments(parent, args, ctx, info) {
+      return comments;
     },
   },
   Post: {
