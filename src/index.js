@@ -167,6 +167,12 @@ const resolvers = {
       return posts.filter((post) => post.author === id);
     },
   },
+  Comment: {
+    author(parent, args, ctx, info) {
+      const { author } = parent;
+      return users.find((user) => user.id === author);
+    },
+  },
 };
 
 const server = new GraphQLServer({
