@@ -183,8 +183,8 @@ const resolvers = {
       return users.find((user) => user.id === author);
     },
     post(parent, args, ctx, info) {
-      const { post } = parent;
-      return posts.find((post) => post.id === post);
+      const { post: postId } = parent;
+      return posts.find((post) => post.id === postId);
     },
   },
 };
