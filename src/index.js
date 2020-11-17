@@ -56,18 +56,22 @@ const comments = [
   {
     id: 'a',
     text: 'The A text',
+    author: '1',
   },
   {
     id: 'b',
     text: 'The B text',
+    author: '2',
   },
   {
     id: 'c',
     text: 'The C text',
+    author: '3',
   },
   {
     id: 'd',
     text: 'The D text',
+    author: '2',
   },
 ];
 /*
