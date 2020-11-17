@@ -104,6 +104,7 @@ const typeDefs = `
   type Comment {
     id: ID!,
     text: String!
+    author: User!
   }
 `;
 
