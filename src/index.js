@@ -100,6 +100,12 @@ const typeDefs = `
     createComment(text:String!,author:ID!,post:ID!):Comment!
   }
   
+  input CreateUserInput{
+    name:String!
+    email:String!
+    age:Int
+  }
+  
   type User {
     id: ID!
     name: String!
