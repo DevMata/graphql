@@ -204,6 +204,22 @@ const resolvers = {
       posts.push(newPost);
       return newPost;
     },
+    createComment(parent, args, ctx, info) {
+      const { text, author, post: postId } = args;
+
+      if (!users.some((user) => user.id === author)) {
+        throw new Error('The user does not exist');
+      }
+
+      if (!posts.some((post) => post.id === postId)) {
+        throw new Error('The post does not exist');
+      }
+
+      const newComment = { id: uuidv4(), text, author, post: postId };
+
+      comments.push(newComment);
+      return newComment;
+    },
   },
   Post: {
     author(parent, args, ctx, info) {
