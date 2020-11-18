@@ -95,9 +95,28 @@ const typeDefs = `
   }
   
   type Mutation{
-    createUser(name:String!,email:String!,age:Int):User!
-    createPost(title:String!,body:String!,published:Boolean!,author:ID!):Post!
-    createComment(text:String!,author:ID!,post:ID!):Comment!
+    createUser(data:CreateUserInput):User!
+    createPost(post:CreatePostInput):Post!
+    createComment(comment:CreateCommentInput):Comment!
+  }
+  
+  input CreateUserInput{
+    name:String!
+    email:String!
+    age:Int
+  }
+  
+  input CreatePostInput{
+    title:String!
+    body:String!
+    published:Boolean!
+    author:ID!
+  }
+  
+  input CreateCommentInput{
+    text:String!    
+    author:ID!
+    post:ID!
   }
   
   type User {
@@ -171,51 +190,46 @@ const resolvers = {
   },
   Mutation: {
     createUser(parent, args, ctx, info) {
-      const { name, email, age } = args;
-      if (users.some((user) => user.email === email)) {
+      const { data } = args;
+      if (users.some((user) => user.email === data.email)) {
         throw new Error('The email address is already taken');
       }
 
       const newUser = {
         id: uuidv4(),
-        name,
-        email,
-        age,
+        ...data,
       };
 
       users.push(newUser);
       return newUser;
     },
     createPost(parent, args, ctx, info) {
-      const { title, body, published, author } = args;
+      const { post } = args;
 
-      if (!users.some((user) => user.id === author)) {
+      if (!users.some((user) => user.id === post.author)) {
         throw new Error('The user does not exist');
       }
 
       const newPost = {
         id: uuidv4(),
-        title,
-        body,
-        published,
-        author,
+        ...post,
       };
 
       posts.push(newPost);
       return newPost;
     },
     createComment(parent, args, ctx, info) {
-      const { text, author, post: postId } = args;
+      const { comment } = args;
 
-      if (!users.some((user) => user.id === author)) {
+      if (!users.some((user) => user.id === comment.author)) {
         throw new Error('The user does not exist');
       }
 
-      if (!posts.some((post) => post.id === postId)) {
+      if (!posts.some((post) => post.id === comment.post)) {
         throw new Error('The post does not exist');
       }
 
-      const newComment = { id: uuidv4(), text, author, post: postId };
+      const newComment = { id: uuidv4(), ...comment };
 
       comments.push(newComment);
       return newComment;
