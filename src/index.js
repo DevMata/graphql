@@ -177,16 +177,14 @@ const resolvers = {
   },
   Mutation: {
     createUser(parent, args, ctx, info) {
-      const { name, email, age } = args;
-      if (users.some((user) => user.email === email)) {
+      const { data } = args;
+      if (users.some((user) => user.email === data.email)) {
         throw new Error('The email address is already taken');
       }
 
       const newUser = {
         id: uuidv4(),
-        name,
-        email,
-        age,
+        ...data,
       };
 
       users.push(newUser);
