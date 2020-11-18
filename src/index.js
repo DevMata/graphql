@@ -204,18 +204,15 @@ const resolvers = {
       return newUser;
     },
     createPost(parent, args, ctx, info) {
-      const { title, body, published, author } = args;
+      const { post } = args;
 
-      if (!users.some((user) => user.id === author)) {
+      if (!users.some((user) => user.id === post.author)) {
         throw new Error('The user does not exist');
       }
 
       const newPost = {
         id: uuidv4(),
-        title,
-        body,
-        published,
-        author,
+        ...post,
       };
 
       posts.push(newPost);
