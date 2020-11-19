@@ -1,7 +1,7 @@
 import { GraphQLServer } from 'graphql-yoga';
 import uuidv4 from 'uuid/v4';
 
-const users = [
+let users = [
   {
     id: '1',
     name: 'Antonio Mata',
@@ -22,7 +22,7 @@ const users = [
   },
 ];
 
-const posts = [
+let posts = [
   {
     id: '456',
     title: 'Boundaries',
@@ -53,7 +53,7 @@ const posts = [
   },
 ];
 
-const comments = [
+let comments = [
   {
     id: 'a',
     text: 'The A text',
@@ -203,6 +203,24 @@ const resolvers = {
 
       users.push(newUser);
       return newUser;
+    },
+    deleteUser(parent, args, ctx, info) {
+      const userId = users.findIndex((user) => user.id === args.id);
+      if (userId < 0) {
+        throw new Error('The user does not exist.');
+      }
+
+      const deletedUser = users.splice(userId, 1).shift();
+      posts = posts.filter((post) => {
+        const match = post.author === args.id;
+        if (match) {
+          comments = comments.filter((comment) => comment.post === post.id);
+        }
+        return !match;
+      });
+      comments = comments.filter((comment) => comment.author !== args.id);
+
+      return deletedUser;
     },
     createPost(parent, args, ctx, info) {
       const { post } = args;
