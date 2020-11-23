@@ -100,6 +100,7 @@ const typeDefs = `
     createPost(post:CreatePostInput):Post!
     deletePost(id:ID!):Post!
     createComment(comment:CreateCommentInput):Comment!
+    deleteComment(id:ID!):Comment!
   }
   
   input CreateUserInput{
