@@ -238,6 +238,17 @@ const resolvers = {
       posts.push(newPost);
       return newPost;
     },
+    deletePost(parent, args, ctx, info) {
+      const postIndex = posts.findIndex((post) => post.id === args.id);
+      if (postIndex < 0) {
+        throw new Error('The post does not exist');
+      }
+
+      const deletedPost = posts.splice(postIndex, 1).shift();
+      comments = comments.filter((comment) => comment.post !== args.id);
+
+      return deletedPost;
+    },
     createComment(parent, args, ctx, info) {
       const { comment } = args;
 
