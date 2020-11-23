@@ -100,6 +100,7 @@ const typeDefs = `
     createPost(post:CreatePostInput):Post!
     deletePost(id:ID!):Post!
     createComment(comment:CreateCommentInput):Comment!
+    deleteComment(id:ID!):Comment!
   }
   
   input CreateUserInput{
@@ -264,6 +265,16 @@ const resolvers = {
 
       comments.push(newComment);
       return newComment;
+    },
+    deleteComment(parent, args, ctx, info) {
+      const commentIndex = comments.findIndex(
+        (comment) => comment.id === args.id,
+      );
+      if (commentIndex < 0) {
+        throw new Error('The comment does not exist.');
+      }
+
+      return comments.splice(commentIndex, 1).shift();
     },
   },
   Post: {
