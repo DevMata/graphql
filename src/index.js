@@ -98,6 +98,7 @@ const typeDefs = `
     createUser(data:CreateUserInput):User!
     deleteUser(id:ID!):User!
     createPost(post:CreatePostInput):Post!
+    deletePost(id:ID!):Post!
     createComment(comment:CreateCommentInput):Comment!
   }
   
