@@ -20,7 +20,7 @@ type Mutation {
 
 type Subscription {
   count: Int!
-  comment: Comment!
+  comment(postId:ID!): Comment!
 }
 
 input CreateUserInput {
