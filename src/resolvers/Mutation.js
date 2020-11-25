@@ -105,20 +105,23 @@ const Mutation = {
 
     return deletedPost;
   },
-  createComment(parent, args, { db }, info) {
+  createComment(parent, args, { db, pubsub }, info) {
     const { comment } = args;
 
     if (!db.users.some((user) => user.id === comment.author)) {
       throw new Error('The user does not exist');
     }
 
-    if (!db.posts.some((post) => post.id === comment.post)) {
+    if (!db.posts.some((post) => post.id === comment.post && post.published)) {
       throw new Error('The post does not exist');
     }
 
     const newComment = { id: uuidv4(), ...comment };
 
     db.comments.push(newComment);
+    pubsub.publish(`comment ${comment.post}`, {
+      comment: newComment,
+    });
     return newComment;
   },
   updateComment(parent, args, { db }, info) {
