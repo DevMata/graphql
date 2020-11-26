@@ -13,6 +13,11 @@ const Subscription = {
       return pubsub.asyncIterator('count');
     },
   },
+  post: {
+    subscribe(parent, args, { db, pubsub }, info) {
+      return pubsub.asyncIterator('post');
+    },
+  },
   comment: {
     subscribe(parent, args, { db, pubsub }, info) {
       const { postId } = args;
