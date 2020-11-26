@@ -58,7 +58,7 @@ const Mutation = {
 
     return deletedUser;
   },
-  createPost(parent, args, { db }, info) {
+  createPost(parent, args, { db, pubsub }, info) {
     const { post } = args;
 
     if (!db.users.some((user) => user.id === post.author)) {
@@ -70,6 +70,9 @@ const Mutation = {
       ...post,
     };
 
+    if (newPost.published) {
+      pubsub.publish('post', { post: newPost });
+    }
     db.posts.push(newPost);
     return newPost;
   },
