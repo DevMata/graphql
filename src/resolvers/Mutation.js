@@ -71,15 +71,22 @@ const Mutation = {
     };
 
     if (newPost.published) {
-      pubsub.publish('post', { post: newPost });
+      pubsub.publish('post', {
+        post: {
+          mutation: 'CREATED',
+          data: newPost,
+        },
+      });
     }
     db.posts.push(newPost);
     return newPost;
   },
-  updatePost(parent, args, { db }, info) {
+  updatePost(parent, args, { db, pubsub }, info) {
     const { id, data } = args;
 
     const post = db.posts.find((post) => post.id === id);
+    const originalPost = { ...post };
+
     if (!post) {
       throw new Error('The post does not exist');
     }
@@ -91,13 +98,35 @@ const Mutation = {
     if (typeof data.body === 'string') {
       post.body = data.body;
     }
-    if (typeof data.title === 'boolean') {
+    if (typeof data.published === 'boolean') {
       post.published = data.published;
+      if (originalPost.published && !post.published) {
+        pubsub.publish('post', {
+          post: {
+            mutation: 'DELETED',
+            data: originalPost,
+          },
+        });
+      } else if (!originalPost.published && post.published) {
+        pubsub.publish('post', {
+          post: {
+            mutation: 'CREATED',
+            data: post,
+          },
+        });
+      }
+    } else if (post.published) {
+      pubsub.publish('post', {
+        post: {
+          mutation: 'UPDATED',
+          data: post,
+        },
+      });
     }
 
     return post;
   },
-  deletePost(parent, args, { db }, info) {
+  deletePost(parent, args, { db, pubsub }, info) {
     const postIndex = db.posts.findIndex((post) => post.id === args.id);
     if (postIndex < 0) {
       throw new Error('The post does not exist');
@@ -105,6 +134,15 @@ const Mutation = {
 
     const deletedPost = db.posts.splice(postIndex, 1).shift();
     db.comments = db.comments.filter((comment) => comment.post !== args.id);
+
+    if (deletedPost.published) {
+      pubsub.publish('post', {
+        post: {
+          mutation: 'DELETED',
+          data: deletedPost,
+        },
+      });
+    }
 
     return deletedPost;
   },
