@@ -7,14 +7,14 @@ const users = [
   },
   {
     id: '2',
-    name: 'Arely Viana',
-    email: 'arely@email.com',
+    name: 'Alicia Ortiz',
+    email: 'alicia@email.com',
     age: null,
   },
   {
     id: '3',
-    name: 'Adriana Rivas',
-    email: 'adriana@email.com',
+    name: 'Juan Rivas',
+    email: 'juan@email.com',
     age: null,
   },
 ];
