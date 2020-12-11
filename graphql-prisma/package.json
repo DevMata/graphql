@@ -1,21 +1,26 @@
 {
   "name": "graphql-course",
   "version": "1.0.0",
-  "description": "",
+  "description": "A graphql companion repo for a graphql-course",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
     "codegen": "graphql codegen"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "graphql",
+    "prisma",
+    "graphql-yoga"
+  ],
+  "author": "Antonio Mata",
   "license": "ISC",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "graphql": "^15.4.0",
+    "graphql": "14.6.0",
+    "graphql-binding": "^2.5.2",
     "graphql-cli": "^4.1.0",
     "graphql-yoga": "^1.18.3",
     "prisma-binding": "^2.3.16",
@@ -29,8 +34,5 @@
     "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^2.0.4",
     "prettier": "^2.2.1"
-  },
-  "resolutions": {
-    "graphql": "^15.4.0"
   }
 }
