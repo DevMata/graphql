@@ -18,45 +18,45 @@ const log = (data) => console.log(JSON.stringify(data, null, 2));
   .catch(log);*/
 
 const createPostForUser = async (authorId, data) => {
-  await prisma.mutation.createPost(
+  const userExists = await prisma.exists.User({ id: authorId });
+  if (!userExists) {
+    throw new Error('User does not exist.');
+  }
+
+  return await prisma.mutation.createPost(
     {
       data: {
         ...data,
         author: { connect: { id: authorId } },
       },
     },
-    '{ id }',
-  );
-
-  return await prisma.query.user(
-    { where: { id: authorId } },
-    '{ id name email posts { id title body published } }',
+    '{ author { id name email posts { id title body published } } }',
   );
 };
 
 const updatePostForUser = async (postId, data) => {
-  const post = await prisma.mutation.updatePost(
+  const postExists = await prisma.exists.Post({ id: postId });
+  if (!postExists) {
+    throw new Error('Post does not exist');
+  }
+
+  return await prisma.mutation.updatePost(
     {
       data,
       where: { id: postId },
     },
-    '{ author{ id } }',
-  );
-
-  return await prisma.query.user(
-    { where: { id: post.author.id } },
-    '{ id name email posts { id title body published } }',
+    '{ author{ id name email posts { id title body published } } }',
   );
 };
 
-/*createPostForUser('ckiguzkj100dh0747wnzw1cn8', {
-  title: 'Second post of the night',
+/*createPostForUser('ckigvg2b600k60747m17imv5l', {
+  title: 'Second post of the year',
   body: 'A good body',
   published: true,
 })
   .then(log)
-  .catch(log);*/
+  .catch(console.error);*/
 
-/*updatePostForUser('ckitr2bs100sj0847jx1mzb0m', { published: false })
+/*updatePostForUser('ckitr2bs100sj0847jx1mzb0m', { published: true })
   .then(log)
-  .catch(log);*/
+  .catch(console.error);*/
