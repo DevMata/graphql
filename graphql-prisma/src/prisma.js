@@ -18,19 +18,19 @@ const log = (data) => console.log(JSON.stringify(data, null, 2));
   .catch(log);*/
 
 const createPostForUser = async (authorId, data) => {
-  await prisma.mutation.createPost(
+  const userExists = await prisma.exists.User({ id: authorId });
+  if (!userExists) {
+    throw new Error('User does not exist.');
+  }
+
+  return await prisma.mutation.createPost(
     {
       data: {
         ...data,
         author: { connect: { id: authorId } },
       },
     },
-    '{ id }',
-  );
-
-  return await prisma.query.user(
-    { where: { id: authorId } },
-    '{ id name email posts { id title body published } }',
+    '{ author { id name email posts { id title body published } } }',
   );
 };
 
