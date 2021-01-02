@@ -35,17 +35,17 @@ const createPostForUser = async (authorId, data) => {
 };
 
 const updatePostForUser = async (postId, data) => {
-  const post = await prisma.mutation.updatePost(
+  const postExists = await prisma.exists.Post({ id: postId });
+  if (!postExists) {
+    throw new Error('Post does not exist');
+  }
+
+  return await prisma.mutation.updatePost(
     {
       data,
       where: { id: postId },
     },
-    '{ author{ id } }',
-  );
-
-  return await prisma.query.user(
-    { where: { id: post.author.id } },
-    '{ id name email posts { id title body published } }',
+    '{ author{ id name email posts { id title body published } } }',
   );
 };
 
