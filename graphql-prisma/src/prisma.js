@@ -49,14 +49,14 @@ const updatePostForUser = async (postId, data) => {
   );
 };
 
-/*createPostForUser('ckiguzkj100dh0747wnzw1cn8', {
-  title: 'Second post of the night',
+/*createPostForUser('ckigvg2b600k60747m17imv5l', {
+  title: 'Second post of the year',
   body: 'A good body',
   published: true,
 })
   .then(log)
-  .catch(log);*/
+  .catch(console.error);*/
 
-/*updatePostForUser('ckitr2bs100sj0847jx1mzb0m', { published: false })
+/*updatePostForUser('ckitr2bs100sj0847jx1mzb0m', { published: true })
   .then(log)
-  .catch(log);*/
+  .catch(console.error);*/
