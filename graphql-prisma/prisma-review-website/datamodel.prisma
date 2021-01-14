@@ -16,7 +16,7 @@ type Review {
   id: ID! @id
   text: String!
   rating: Int!
-  author: User! @Relation(name: "ReviewToUser", onDelete: SET_NULL)
-  book: Book! @Relation(name: "ReviewToBook", onDelete: SET_NULL)
+  author: User! @relation(name: "ReviewToUser", onDelete: SET_NULL)
+  book: Book! @relation(name: "ReviewToBook", onDelete: SET_NULL)
 }
 
