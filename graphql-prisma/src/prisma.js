@@ -5,7 +5,9 @@ const prisma = new Prisma({
   endpoint: 'http://localhost:4466',
 });
 
-const log = (data) => console.log(JSON.stringify(data, null, 2));
+export { prisma as default };
+
+// const log = (data) => console.log(JSON.stringify(data, null, 2));
 
 /*prisma.query
   .users(null, '{ id name email posts{ id title body published } }')
@@ -17,7 +19,7 @@ const log = (data) => console.log(JSON.stringify(data, null, 2));
   .then(log)
   .catch(log);*/
 
-const createPostForUser = async (authorId, data) => {
+/*const createPostForUser = async (authorId, data) => {
   const userExists = await prisma.exists.User({ id: authorId });
   if (!userExists) {
     throw new Error('User does not exist.');
@@ -32,9 +34,9 @@ const createPostForUser = async (authorId, data) => {
     },
     '{ author { id name email posts { id title body published } } }',
   );
-};
+};*/
 
-const updatePostForUser = async (postId, data) => {
+/*const updatePostForUser = async (postId, data) => {
   const postExists = await prisma.exists.Post({ id: postId });
   if (!postExists) {
     throw new Error('Post does not exist');
@@ -47,7 +49,7 @@ const updatePostForUser = async (postId, data) => {
     },
     '{ author{ id name email posts { id title body published } } }',
   );
-};
+};*/
 
 /*createPostForUser('ckigvg2b600k60747m17imv5l', {
   title: 'Second post of the year',

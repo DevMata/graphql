@@ -14,17 +14,19 @@ const Query = {
       published: false,
     };
   },
-  users(parent, args, { db }, info) {
-    const { query } = args;
+  users(parent, args, { prisma }, info) {
+    /*const { query } = args;
     if (!query) {
       return db.users;
     }
     return db.users.filter((user) =>
       user.name.toLowerCase().includes(query.toLowerCase()),
-    );
+    );*/
+
+    return prisma.query.users(null, info);
   },
-  posts(parent, args, { db }, info) {
-    const { query } = args;
+  posts(parent, args, { prisma }, info) {
+    /*const { query } = args;
 
     if (!query) {
       return db.posts;
@@ -33,7 +35,9 @@ const Query = {
       (post) =>
         post.title.toLowerCase().includes(query.toLowerCase()) ||
         post.body.toLowerCase().includes(query.toLowerCase()),
-    );
+    );*/
+
+    return prisma.query.posts(null, info);
   },
   comments(parent, args, { db }, info) {
     return db.comments;
