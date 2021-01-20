@@ -33,18 +33,22 @@ const Query = {
     return prisma.query.users(operationArgs, info);
   },
   posts(parent, args, { prisma }, info) {
-    /*const { query } = args;
+    const operationArgs = {};
 
-    if (!query) {
-      return db.posts;
+    if (args.query) {
+      operationArgs.where = {
+        OR: [
+          {
+            title_contains: args.query,
+          },
+          {
+            body_contains: args.query,
+          },
+        ],
+      };
     }
-    return db.posts.filter(
-      (post) =>
-        post.title.toLowerCase().includes(query.toLowerCase()) ||
-        post.body.toLowerCase().includes(query.toLowerCase()),
-    );*/
 
-    return prisma.query.posts(null, info);
+    return prisma.query.posts(operationArgs, info);
   },
   comments(parent, args, { db }, info) {
     return db.comments;
