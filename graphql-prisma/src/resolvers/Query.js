@@ -15,15 +15,22 @@ const Query = {
     };
   },
   users(parent, args, { prisma }, info) {
-    /*const { query } = args;
-    if (!query) {
-      return db.users;
-    }
-    return db.users.filter((user) =>
-      user.name.toLowerCase().includes(query.toLowerCase()),
-    );*/
+    const operationArgs = {};
 
-    return prisma.query.users(null, info);
+    if (args.query) {
+      operationArgs.where = {
+        OR: [
+          {
+            name_contains: args.query,
+          },
+          {
+            email_contains: args.query,
+          },
+        ],
+      };
+    }
+
+    return prisma.query.users(operationArgs, info);
   },
   posts(parent, args, { prisma }, info) {
     /*const { query } = args;
