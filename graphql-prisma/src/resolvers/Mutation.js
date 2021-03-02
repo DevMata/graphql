@@ -2,45 +2,20 @@ import uuidv4 from 'uuid/v4';
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
-    const takenEmail = await prisma.exists.User({ email: args.data.email });
-
-    if (takenEmail) {
-      throw new Error('Email taken');
-    }
-
     return prisma.mutation.createUser({ data: args.data }, info);
   },
-  updateUser(parent, args, { db }, info) {
-    const { id, data } = args;
-    const user = db.users.find((user) => user.id === id);
-    if (!user) {
-      throw new Error('The user does not exist.');
-    }
-
-    if (typeof data.email === 'string') {
-      const emailTaken = db.users.some((user) => user.email === data.email);
-      if (emailTaken) {
-        throw new Error('Email taken');
-      }
-      user.email = data.email;
-    }
-
-    if (typeof data.name === 'string') {
-      user.name = data.name;
-    }
-
-    if (typeof data.age !== 'undefined') {
-      user.age = data.age;
-    }
-
-    return user;
+  updateUser(parent, args, { prisma }, info) {
+    return prisma.mutation.updateUser(
+      {
+        where: {
+          id: args.id,
+        },
+        data: args.data,
+      },
+      info,
+    );
   },
   async deleteUser(parent, args, { prisma }, info) {
-    const user = await prisma.exists.User({ id: args.id });
-    if (!user) {
-      throw new Error('User not found');
-    }
-
     return prisma.mutation.deleteUser({ where: { id: args.id } }, info);
   },
   createPost(parent, args, { db, pubsub }, info) {
