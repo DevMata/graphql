@@ -1,19 +1,14 @@
 import uuidv4 from 'uuid/v4';
 
 const Mutation = {
-  createUser(parent, args, { db }, info) {
-    const { data } = args;
-    if (db.users.some((user) => user.email === data.email)) {
-      throw new Error('The email address is already taken');
+  async createUser(parent, args, { prisma }, info) {
+    const takenEmail = await prisma.exists.User({ email: args.data.email });
+
+    if (takenEmail) {
+      throw new Error('Email taken');
     }
 
-    const newUser = {
-      id: uuidv4(),
-      ...data,
-    };
-
-    db.users.push(newUser);
-    return newUser;
+    return prisma.mutation.createUser({ data: args.data }, info);
   },
   updateUser(parent, args, { db }, info) {
     const { id, data } = args;
