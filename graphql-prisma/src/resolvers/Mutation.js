@@ -1,7 +1,7 @@
 import uuidv4 from 'uuid/v4';
 
 const Mutation = {
-  async createUser(parent, args, { prisma }, info) {
+  createUser(parent, args, { prisma }, info) {
     return prisma.mutation.createUser({ data: args.data }, info);
   },
   updateUser(parent, args, { prisma }, info) {
@@ -15,31 +15,21 @@ const Mutation = {
       info,
     );
   },
-  async deleteUser(parent, args, { prisma }, info) {
+  deleteUser(parent, args, { prisma }, info) {
     return prisma.mutation.deleteUser({ where: { id: args.id } }, info);
   },
-  createPost(parent, args, { db, pubsub }, info) {
-    const { post } = args;
+  createPost(parent, args, { prisma }, info) {
+    const { author: authorId, ...postData } = args.data;
 
-    if (!db.users.some((user) => user.id === post.author)) {
-      throw new Error('The user does not exist');
-    }
-
-    const newPost = {
-      id: uuidv4(),
-      ...post,
-    };
-
-    if (newPost.published) {
-      pubsub.publish('post', {
-        post: {
-          mutation: 'CREATED',
-          data: newPost,
+    return prisma.mutation.createPost(
+      {
+        data: {
+          ...postData,
+          author: { connect: { id: authorId } },
         },
-      });
-    }
-    db.posts.push(newPost);
-    return newPost;
+      },
+      info,
+    );
   },
   updatePost(parent, args, { db, pubsub }, info) {
     const { id, data } = args;
