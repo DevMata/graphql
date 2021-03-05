@@ -4,7 +4,6 @@
   "description": "A graphql companion repo for a graphql-course",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
     "start:debug": "nodemon --inspect src/index.js --ext js,graphql --exec babel-node",
     "codegen": "graphql codegen"
@@ -14,7 +13,7 @@
     "prisma",
     "graphql-yoga"
   ],
-  "author": "Antonio Mata",
+  "author": "Antonio Mata <hildeamp@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "babel-cli": "^6.26.0",
