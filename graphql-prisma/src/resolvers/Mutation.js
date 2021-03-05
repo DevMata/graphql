@@ -52,25 +52,25 @@ const Mutation = {
       info,
     );
   },
-  createComment(parent, args, { db, pubsub }, info) {
-    const { comment } = args;
-
-    if (!db.users.some((user) => user.id === comment.author)) {
-      throw new Error('The user does not exist');
-    }
-
-    if (!db.posts.some((post) => post.id === comment.post && post.published)) {
-      throw new Error('The post does not exist');
-    }
-
-    const newComment = { id: uuidv4(), ...comment };
-
-    db.comments.push(newComment);
-    pubsub.publish(`comment ${comment.post}`, {
-      comment: { mutation: 'CREATED', data: newComment },
-    });
-
-    return newComment;
+  createComment(parent, args, { prisma }, info) {
+    return prisma.mutation.createComment(
+      {
+        data: {
+          text: args.data.text,
+          author: {
+            connect: {
+              id: args.data.author,
+            },
+          },
+          post: {
+            connect: {
+              id: args.data.post,
+            },
+          },
+        },
+      },
+      info,
+    );
   },
   updateComment(parent, args, { db, pubsub }, info) {
     const { id, data } = args;
