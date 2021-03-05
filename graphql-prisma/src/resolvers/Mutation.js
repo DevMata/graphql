@@ -83,21 +83,13 @@ const Mutation = {
       info,
     );
   },
-  deleteComment(parent, args, { db, pubsub }, info) {
-    const commentIndex = db.comments.findIndex(
-      (comment) => comment.id === args.id,
+  deleteComment(parent, args, { prisma }, info) {
+    return prisma.mutation.deleteComment(
+      {
+        where: { id: args.id },
+      },
+      info,
     );
-    if (commentIndex < 0) {
-      throw new Error('The comment does not exist.');
-    }
-
-    const deletedComment = db.comments.splice(commentIndex, 1).shift();
-
-    pubsub.publish(`comment ${deletedComment.post}`, {
-      comment: { mutation: 'DELETED', data: deletedComment },
-    });
-
-    return deletedComment;
   },
 };
 
