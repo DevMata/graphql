@@ -6,14 +6,15 @@
   "scripts": {
     "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
     "start:debug": "nodemon --inspect-brk src/index.js --ext js,graphql --exec babel-node",
-    "codegen": "graphql codegen"
+    "codegen": "graphql codegen",
+    "prisma": "node node_modules/prisma1/dist/index.js"
   },
   "keywords": [
     "graphql",
     "prisma",
     "graphql-yoga"
   ],
-  "author": "Antonio Mata <hildeamp@gmail.com>",
+  "author": "Antonio Mata <antonio.mata.sv@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -24,6 +25,7 @@
     "graphql-cli": "^4.1.0",
     "graphql-yoga": "^1.18.3",
     "prisma-binding": "^2.3.16",
+    "prisma1": "^1.34.12",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
