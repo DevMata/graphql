@@ -7,7 +7,8 @@
     "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
     "start:debug": "nodemon --inspect-brk src/index.js --ext js,graphql --exec babel-node",
     "codegen": "graphql codegen",
-    "prisma": "node node_modules/prisma1/dist/index.js"
+    "prisma": "node node_modules/prisma1/dist/index.js",
+    "prisma:deploy": "npm run prisma -- deploy -p"
   },
   "keywords": [
     "graphql",
