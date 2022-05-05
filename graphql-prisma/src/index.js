@@ -23,6 +23,8 @@ const server = new GraphQLServer({
   context: { db, pubsub, prisma },
 });
 
-server.start(() => {
-  console.log('The server started up');
-});
+server
+  .start(() => {
+    console.log('The server started up');
+  })
+  .catch(console.log);
